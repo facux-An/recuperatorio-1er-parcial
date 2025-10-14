@@ -1,0 +1,43 @@
+{% extends 'categorias/base_categorias.html' %}
+{% block content %}
+<h2>Categorías</h2>
+<a href="{% url 'categorias:crear' %}" class="btn btn-primary mb-3">Agregar Categoría</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Fecha de creación</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for categoria in categorias %}
+        <tr>
+            <td>{{ categoria.nombre }}</td>
+            <td>{{ categoria.fecha_creacion }}</td>
+            <td>
+                <a href="{% url 'categorias:editar' categoria.id %}" class="btn btn-sm btn-warning">Editar</a>
+                <a href="{% url 'categorias:borrar' categoria.id %}" class="btn btn-sm btn-danger">Borrar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">No hay categorías cargadas.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<nav>
+    <ul class="pagination">
+        {% if categorias.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1">Primera</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ categorias.previous_page_number }}">Anterior</a></li>
+        {% endif %}
+        <li class="page-item active"><span class="page-link">{{ categorias.number }}</span></li>
+        {% if categorias.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ categorias.next_page_number }}">Siguiente</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ categorias.paginator.num_pages }}">Última</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}
